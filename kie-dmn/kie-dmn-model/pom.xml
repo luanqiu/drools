@@ -17,6 +17,9 @@
   
   <properties>
     <java.module.name>org.kie.dmn.model</java.module.name>
+    <parsedVersion.majorVersion>1</parsedVersion.majorVersion>
+    <parsedVersion.minorVersion>8</parsedVersion.minorVersion>
+    <parsedVersion.incrementalVersion>1</parsedVersion.incrementalVersion>
   </properties>
   
   <build>

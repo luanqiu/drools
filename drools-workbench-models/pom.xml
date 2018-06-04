@@ -14,6 +14,10 @@
 
   <name>Drools Workbench - Models</name>
 
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
   <modules>
     <module>drools-workbench-models-commons</module>
     <module>drools-workbench-models-guided-dtable</module>

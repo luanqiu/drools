@@ -16,6 +16,7 @@
 
   <properties>
     <java.module.name>org.kie.ci</java.module.name>
+    <java.version>1.8</java.version>
   </properties>
 
   <dependencies>
@@ -198,7 +199,6 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.drools</groupId>

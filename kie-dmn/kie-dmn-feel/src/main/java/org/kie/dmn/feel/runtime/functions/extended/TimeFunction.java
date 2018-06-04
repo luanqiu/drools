@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQueries;
+import java.util.function.Function;
 
 public class TimeFunction extends BaseFEELFunction {
     public static final TimeFunction INSTANCE = new TimeFunction();
@@ -57,8 +58,14 @@ public class TimeFunction extends BaseFEELFunction {
             // try to parse it as a date time and extract the date component
             // NOTE: this is an extension to the standard
             return BuiltInFunctions.getFunction(DateAndTimeFunction.class).invoke(val)
-                    .cata(overrideLeft -> FEELFnResult.ofError(new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from", "time-parsing exception", e)),
-                            this::invoke
+                    .cata(new Function<FEELEvent, FEELFnResult<TemporalAccessor>>() {
+                              @Override
+                              public FEELFnResult<TemporalAccessor> apply(FEELEvent feelEvent) {
+                                  return FEELFnResult.ofError(
+                                      new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from",
+                                                                 "time-parsing exception", e));
+                              }
+                          }, this::invoke
                     );
         }
     }
@@ -100,15 +107,23 @@ public class TimeFunction extends BaseFEELFunction {
 
     public FEELFnResult<TemporalAccessor> invoke(@ParameterName("from") TemporalAccessor date) {
         if (date == null) {
-            return FEELFnResult.ofError(new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from", "cannot be null"));
+            FEELFnResult<Object> result =  FEELFnResult.ofError(new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from", "cannot be null"));
+            return (FEELFnResult)result;
         }
 
         try {
             // If the temporal accessor type doesn't support time, try to parse it as a date with UTC midnight.
             if (!date.isSupported(ChronoField.HOUR_OF_DAY)) {
                 return BuiltInFunctions.getFunction( DateAndTimeFunction.class ).invoke( date, OffsetTime.of(0, 0, 0, 0, ZoneOffset.UTC) )
-                        .cata( overrideLeft -> FEELFnResult.ofError(new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from", "time-parsing exception")),
-                                this::invoke
+                        .cata(new Function<FEELEvent, FEELFnResult<TemporalAccessor>>() {
+                                  @Override
+                                  public FEELFnResult<TemporalAccessor> apply(FEELEvent feelEvent) {
+                                      return FEELFnResult.ofError(
+                                          new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from",
+                                                                     "time-parsing exception"));
+                                  }
+                              },
+                              this::invoke
                         );
             } else if( date.query( TemporalQueries.offset() ) == null ) {
                 return FEELFnResult.ofResult(LocalTime.from(date));

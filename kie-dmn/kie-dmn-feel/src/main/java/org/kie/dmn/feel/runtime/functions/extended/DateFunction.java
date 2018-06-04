@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
 import java.time.temporal.TemporalAccessor;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import static java.time.temporal.ChronoField.DAY_OF_MONTH;
@@ -37,7 +38,8 @@ public class DateFunction extends BaseFEELFunction {
 
     public FEELFnResult<TemporalAccessor> invoke(@ParameterName("from") String val) {
         if (val == null) {
-            return FEELFnResult.ofError(new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from", "cannot be null"));
+            FEELFnResult<Object> result =  FEELFnResult.ofError(new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from", "cannot be null"));
+            return (FEELFnResult)result;
         }
         if (!BEGIN_YEAR.matcher(val).find()) { // please notice the regex strictly requires the beginning, so we can use find.
             return FEELFnResult.ofError(new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from", "year not compliant with XML Schema Part 2 Datatypes"));
@@ -49,8 +51,14 @@ public class DateFunction extends BaseFEELFunction {
             // try to parse it as a date time and extract the date component
             // NOTE: this is an extension to the standard
             return BuiltInFunctions.getFunction(DateAndTimeFunction.class).invoke(val)
-                    .cata(overrideLeft -> FEELFnResult.ofError(new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from", "date-parsing exception", e)),
-                            this::invoke
+                    .cata(new Function<FEELEvent, FEELFnResult<TemporalAccessor>>() {
+                              @Override
+                              public FEELFnResult<TemporalAccessor> apply(FEELEvent feelEvent) {
+                                  return FEELFnResult.ofError(
+                                      new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from",
+                                                                 "date-parsing exception", e));
+                              }
+                          }, this::invoke
                     );
         }
     }

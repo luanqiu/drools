@@ -26,7 +26,6 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.api.definition.KiePackage;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
-import org.kie.internal.runtime.StatefulKnowledgeSession;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -69,7 +68,7 @@ public class MannersBenchmark {
         kbase.addPackages( pkgs );
 
         long totalTime = 0;
-        for ( int i = 0; i < 5; i++ ) {
+//        for ( int i = 0; i < 5; i++ ) {
             KieSession ksession = kbase.newKieSession();
     
             String filename;
@@ -95,9 +94,9 @@ public class MannersBenchmark {
             System.err.println( time );
             totalTime += time;
             ksession.dispose();
-        }
+
         
-        System.out.println( "average : " + totalTime / 5 );
+        System.out.println( "average : " + totalTime );
     }
 
     /**

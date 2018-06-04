@@ -17,12 +17,17 @@
     Builds the download zip of Drools.
   </description>
 
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
   <build>
     <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
+          <version>1.1.1</version>
           <executions>
             <execution>
               <id>ban-duplicated-classes</id>

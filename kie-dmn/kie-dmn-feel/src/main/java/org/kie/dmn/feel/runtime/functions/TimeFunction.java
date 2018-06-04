@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQueries;
+import java.util.function.Function;
 
 import org.kie.dmn.api.feel.runtime.events.FEELEvent;
 import org.kie.dmn.api.feel.runtime.events.FEELEvent.Severity;
@@ -56,7 +57,8 @@ public class TimeFunction
 
     public FEELFnResult<TemporalAccessor> invoke(@ParameterName("from") String val) {
         if ( val == null ) {
-            return FEELFnResult.ofError(new InvalidParametersEvent(Severity.ERROR, "from", "cannot be null"));
+            FEELFnResult<TemporalAccessor> result =  FEELFnResult.ofError(new InvalidParametersEvent(Severity.ERROR, "from", "cannot be null"));
+            return result;
         }
         
         try {
@@ -80,7 +82,7 @@ public class TimeFunction
 
     private static final BigDecimal NANO_MULT = BigDecimal.valueOf( 1000000000 );
 
-    public FEELFnResult<TemporalAccessor> invoke(
+    public FEELFnResult<Object> invoke(
             @ParameterName("hour") Number hour, @ParameterName("minute") Number minute,
             @ParameterName("second") Number seconds, @ParameterName("offset") Duration offset) {
         if ( hour == null ) {
@@ -122,8 +124,15 @@ public class TimeFunction
             // If the temporal accessor type doesn't support time, try to parse it as a date with UTC midnight.
             if (!date.isSupported(ChronoField.HOUR_OF_DAY)) {
                 return BuiltInFunctions.getFunction( DateAndTimeFunction.class ).invoke( date, OffsetTime.of(0, 0, 0, 0, ZoneOffset.UTC) )
-                        .cata( overrideLeft -> FEELFnResult.ofError(new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from", "time-parsing exception")),
-                                this::invoke
+                        .cata(new Function<FEELEvent, FEELFnResult<TemporalAccessor>>() {
+                                  @Override
+                                  public FEELFnResult<TemporalAccessor> apply(FEELEvent feelEvent) {
+                                      return  FEELFnResult.ofError(
+                                           new InvalidParametersEvent(FEELEvent.Severity.ERROR, "from",
+                                                                     "time-parsing exception"));
+                                  }
+                              },
+                              this::invoke
                         );
             } else if( date.query( TemporalQueries.offset() ) == null ) {
                 return FEELFnResult.ofResult( LocalTime.from( date ) );

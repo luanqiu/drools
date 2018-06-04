@@ -12,6 +12,10 @@
   <artifactId>drools-examples-cdi</artifactId>
   <name>Drools CDI examples</name>
 
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
   <packaging>pom</packaging>
   <modules>
     <module>cdi-example</module>

@@ -140,7 +140,7 @@ public class PhreakJoinNode {
 
         for (RightTuple rightTuple = srcRightTuples.getInsertFirst(); rightTuple != null; ) {
             RightTuple next = rightTuple.getStagedNext();
-            rtm.add( rightTuple );
+             rtm.add( rightTuple );
 
             if ( ltm != null && ltm.size() > 0 ) {
                 FastIterator it = joinNode.getLeftIterator( ltm );

@@ -19,6 +19,7 @@
     <java.module.name>org.kie.dmn.feel</java.module.name>
     <surefire.forkCount>2</surefire.forkCount>
     <enforcer.skip>true</enforcer.skip>
+    <java.version>1.8</java.version>
   </properties>
 
   <dependencies>
@@ -51,7 +52,6 @@
     <dependency><!-- For unit test logging: configure in src/test/resources/logback-test.xml -->
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <scope>test</scope>
     </dependency>
 
     <!-- Tests -->

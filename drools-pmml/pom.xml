@@ -34,7 +34,9 @@
   <properties>
     <java.module.name>org.drools.pmml</java.module.name>
     <surefire.forkCount>2</surefire.forkCount>
+    <java.version>1.8</java.version>
   </properties>
+
 
   <dependencies>
     <dependency>

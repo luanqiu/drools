@@ -13,6 +13,11 @@
   <artifactId>kie-dmn</artifactId>
   <packaging>pom</packaging>
 
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
+
   <name>KIE :: Decision Model Notation</name>
   <description>Top level pom for the KIE DMN support implementation</description>
 

@@ -22,6 +22,10 @@
 
   <properties>
     <surefire.forkCount>1</surefire.forkCount>
+    <java.version>1.8</java.version>
+    <parsedVersion.majorVersion>1</parsedVersion.majorVersion>
+    <parsedVersion.minorVersion>8</parsedVersion.minorVersion>
+    <parsedVersion.incrementalVersion>1</parsedVersion.incrementalVersion>
   </properties>
 
   <repositories>

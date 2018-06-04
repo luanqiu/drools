@@ -15,6 +15,7 @@
  */
 
 package org.drools.benchmark.manners
+import javax.xml.transform.stream.StreamSource
 
 rule assignFirstSeat
     when
@@ -23,17 +24,15 @@ rule assignFirstSeat
         count : Count()
     then
         String guestName = guest.getName();
-        
+
         Seating seating =  new Seating( count.getValue(), 1, true, 1, guestName, 1, guestName);
         insert( seating );
-        
+
         Path path = new Path( count.getValue(), 1, guestName );
         insert( path );
-        
+
         modify( count ) { setValue ( count.getValue() + 1 )  }
-
-        System.out.println( "assign first seat :  " + seating + " : " + path );
-
+        System.out.println( "----------  seat  is:  " + seating + " and Path is : " + path );
         modify( context ) {
             setState( Context.ASSIGN_SEATS )
         } 
@@ -69,44 +68,6 @@ rule findSeating
        modify( count ) {setValue(  countValue + 1 )}        
        modify( context ) {setState( Context.MAKE_PATH )} 
 end
-
-rule makePath
-    when
-        Context( state == Context.MAKE_PATH )
-        Seating( seatingId:id, seatingPid:pid, pathDone == false )
-        Path( id == seatingPid, pathGuestName:guestName, pathSeat:seat )
-        not Path( id == seatingId, guestName == pathGuestName )
-    then
-        insert( new Path( seatingId, pathSeat, pathGuestName ) );
-end
-
-rule pathDone
-    when
-        context : Context( state == Context.MAKE_PATH ) 
-        seating : Seating( pathDone == false ) 
-    then
-        modify( seating ) {setPathDone( true )} 
-        
-        modify( context ) {setState( Context.CHECK_DONE)}
-end
-
-rule continue
-    when
-        context : Context( state == Context.CHECK_DONE ) 
-    then
-        modify( context ) {setState( Context.ASSIGN_SEATS )}
-end
-
-rule areWeDone
-    when
-        context : Context( state == Context.CHECK_DONE ) 
-        LastSeat( lastSeat: seat )
-        Seating( rightSeat == lastSeat ) 
-    then
-        modify( context ) {setState(Context.PRINT_RESULTS )}
-end
-
-
 
 rule allDone
     when

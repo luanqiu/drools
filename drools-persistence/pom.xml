@@ -9,6 +9,10 @@
     <version>7.8.0-SNAPSHOT</version>
   </parent>
 
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
   <artifactId>drools-persistence</artifactId>
   <name>Drools Persistence projects</name>
   <packaging>pom</packaging>

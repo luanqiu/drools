@@ -23,16 +23,16 @@ import org.kie.dmn.feel.util.Either;
 
 public class FEELFnResult<T> extends Either<FEELEvent, T> {
 
-    protected FEELFnResult(Optional<FEELEvent> left, Optional<T> right) {
+    protected  FEELFnResult(Optional<FEELEvent> left, Optional right) {
         super(left, right);
     }
 
     public static <T> FEELFnResult<T> ofError(FEELEvent event) {
-        return new FEELFnResult<>(Optional.of(event), Optional.empty());
+        return new FEELFnResult(Optional.of(event), Optional.empty());
     }
     
     public static <T> FEELFnResult<T> ofResult(T value) {
-        return new FEELFnResult<>(Optional.empty(), Optional.ofNullable(value));
+        return new FEELFnResult(Optional.empty(), Optional.ofNullable(value));
     }
     
 }

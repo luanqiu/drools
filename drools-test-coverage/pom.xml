@@ -15,6 +15,12 @@
   <artifactId>drools-test-coverage-parent</artifactId>
   <packaging>pom</packaging>
 
+
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
+
   <name>Drools :: Test Coverage</name>
 
   <modules>

@@ -18,6 +18,10 @@
     <java.module.name>org.drools.compiler</java.module.name>
     <excludedGroups>org.kie.test.testcategory.TurtleTestCategory</excludedGroups>
     <surefire.forkCount>2</surefire.forkCount>
+    <java.version>1.8</java.version>
+    <parsedVersion.majorVersion>1</parsedVersion.majorVersion>
+    <parsedVersion.minorVersion>8</parsedVersion.minorVersion>
+    <parsedVersion.incrementalVersion>1</parsedVersion.incrementalVersion>
   </properties>
 
   <dependencies>
@@ -161,7 +165,6 @@
     <dependency><!-- For unit test logging: configure in src/test/resources/logback-test.xml -->
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <scope>test</scope>
     </dependency>
     
   </dependencies>

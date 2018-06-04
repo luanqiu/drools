@@ -13,6 +13,9 @@
   <name>Drools API examples</name>
 
   <packaging>pom</packaging>
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
 
   <dependencyManagement>
     <dependencies>
